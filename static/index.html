@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        #message-input {
+            padding: 10px;
+            border-top: 1px solid #ccc;
+            display: flex;
+        }
+
+        #message-input input {
+            flex: 1;
+            padding: 5px;
+        }
+
+        #message-input button {
+            padding: 5px 10px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="chat-container"></div>
+
+<div id="message-input">
+    <input type="text" id="message" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+    function sendMessage() {
+        var messageInput = document.getElementById("message");
+        var message = messageInput.value;
+
+        if (message.trim() !== "") {
+            var chatContainer = document.getElementById("chat-container");
+            var newMessage = document.createElement("div");
+            newMessage.textContent = "You: " + message;
+            chatContainer.appendChild(newMessage);
+
+            // Clear the input field
+            messageInput.value = "";
+
+            // Scroll to the bottom of the chat container
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    }
+</script>
+
+</body>
+</html>
