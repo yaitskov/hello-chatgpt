@@ -9,10 +9,6 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
         }
 
         #chat-container {
@@ -21,14 +17,16 @@
             padding: 10px;
         }
 
+        #chat-container > div {
+          margin-bottom: 12px;
+        }
+
         #message-input {
             padding: 10px;
             border-top: 1px solid #ccc;
-            display: flex;
         }
 
         #message-input input {
-            flex: 1;
             padding: 5px;
         }
 
@@ -40,12 +38,12 @@
 </head>
 <body>
 
-<div id="chat-container"></div>
-
 <div id="message-input">
     <input type="text" id="message" placeholder="Задайте свой вопрос комьютеру здесь...">
     <button id="sendMessageButton" onclick="sendMessage()">Отправить</button>
 </div>
+
+<div id="chat-container"></div>
 
 <script>
     function askQuestion(question, onAnswerCb) {
@@ -81,7 +79,7 @@
             newMessage.setAttribute('style', "border: 1px solid red;");
             nextDivId += 1;
             newMessage.textContent = `Вопрос: ${message}`;
-            chatContainer.appendChild(newMessage);
+            chatContainer.prepend(newMessage);
             var response = document.createElement('div');
             response.setAttribute('style', "border: 1px solid green;");
             response.innerHTML = `Тихо! ГПТ чат думает...`;
