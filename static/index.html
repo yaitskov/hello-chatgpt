@@ -48,6 +48,28 @@
 </div>
 
 <script>
+    function askQuestion(question, onAnswerCb) {
+        // Make a GET request to the URL '/api/data'
+        fetch(`/answer?q=${encodeURIComponent(question)}`)
+            .then(response => {
+                // Check if the response status is OK (status code 200-299)
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // Parse the JSON response
+                return response.text();
+            })
+            .then(data => {
+                onAnswerCb(data)
+                // Handle the data as needed
+                console.log(`Answer: ${data}`);
+            })
+            .catch(error => {
+                onAnswerCb(error);
+                console.error('Fetch error:', error);
+            });
+    }
+    var nextDivId = 1;
     function sendMessage() {
         var messageInput = document.getElementById("message");
         var message = messageInput.value;
@@ -55,8 +77,20 @@
         if (message.trim() !== "") {
             var chatContainer = document.getElementById("chat-container");
             var newMessage = document.createElement("div");
-            newMessage.textContent = "You: " + message;
+            newMessage.setAttribute('id', `req${nextDivId}`);
+            newMessage.setAttribute('style', "border: 1px solid red;");
+            nextDivId += 1;
+            newMessage.textContent = `You: ${message}`;
             chatContainer.appendChild(newMessage);
+            askQuestion(
+              message,
+              (resMsg) => {
+                var response = document.createElement('div');
+                response.setAttribute('style', "border: 1px solid green;");
+                response.innerHTML = `GPT: ${resMsg}`;
+                newMessage.appendChild(response);
+              }
+            );
 
             // Clear the input field
             messageInput.value = "";
