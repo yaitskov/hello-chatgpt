@@ -86,10 +86,12 @@
             response.setAttribute('style', "border: 1px solid green;");
             response.innerHTML = `Тихо! ГПТ чат думает...`;
             newMessage.appendChild(response);
+            inHandler = setInterval(() => { response.innerHTML += "."; } , 1000);
             askQuestion(
               message,
               (resMsg) => {
-                 response.innerHTML = `Ответ: ${resMsg}`;
+                clearInterval(inHandler);
+                response.innerHTML = `Ответ: ${resMsg}`;
               }
             );
 
