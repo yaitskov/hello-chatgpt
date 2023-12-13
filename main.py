@@ -24,7 +24,7 @@ class MainHandler(tornado.web.RequestHandler):
             )
             respMsg = resp.choices[0].message.content
             print(f"Response: {respMsg}")
-            self.write(f"""<div><h3>Ответ:</h3><pre style="word-wrap:break-word; white-space:pre-wrap;">{respMsg}</pre></div>""")
+            self.write(f"""<pre style="word-wrap:break-word; white-space:pre-wrap;">{respMsg}</pre>""")
 
 def make_app():
     return tornado.web.Application([

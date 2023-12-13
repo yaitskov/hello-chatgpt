@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Chat</title>
+    <title>Анонимный ГПТ чат</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -43,8 +43,8 @@
 <div id="chat-container"></div>
 
 <div id="message-input">
-    <input type="text" id="message" placeholder="Type your message...">
-    <button onclick="sendMessage()">Send</button>
+    <input type="text" id="message" placeholder="Задайте свой вопрос комьютеру здесь...">
+    <button id="sendMessageButton" onclick="sendMessage()">Отправить</button>
 </div>
 
 <script>
@@ -54,9 +54,8 @@
             .then(response => {
                 // Check if the response status is OK (status code 200-299)
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Ошибка');
                 }
-                // Parse the JSON response
                 return response.text();
             })
             .then(data => {
@@ -70,6 +69,7 @@
             });
     }
     var nextDivId = 1;
+
     function sendMessage() {
         var messageInput = document.getElementById("message");
         var message = messageInput.value;
@@ -80,15 +80,16 @@
             newMessage.setAttribute('id', `req${nextDivId}`);
             newMessage.setAttribute('style', "border: 1px solid red;");
             nextDivId += 1;
-            newMessage.textContent = `You: ${message}`;
+            newMessage.textContent = `Вопрос: ${message}`;
             chatContainer.appendChild(newMessage);
+            var response = document.createElement('div');
+            response.setAttribute('style', "border: 1px solid green;");
+            response.innerHTML = `Тихо! ГПТ чат думает...`;
+            newMessage.appendChild(response);
             askQuestion(
               message,
               (resMsg) => {
-                var response = document.createElement('div');
-                response.setAttribute('style', "border: 1px solid green;");
-                response.innerHTML = `GPT: ${resMsg}`;
-                newMessage.appendChild(response);
+                 response.innerHTML = `Ответ: ${resMsg}`;
               }
             );
 
@@ -99,6 +100,16 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
     }
+    var msgIn = document.getElementById("message");
+    msgIn.addEventListener('keypress', (e) => {
+      console.log(`keypress listener`);
+      if (e.key == 'Enter') {
+        e.preventDefault();
+        const btn = document.getElementById("sendMessageButton");
+        btn.click();
+      }
+    });
+
 </script>
 
 </body>
